@@ -2,11 +2,13 @@ import React, { useState } from 'react'
 import { Link,useNavigate } from 'react-router-dom'
 import {Alert, Button, Label, Spinner, TextInput } from 'flowbite-react'
 import toast from 'react-hot-toast';
+import { signInStart,signInFailure,singInSuccess } from '../redux/user/userSlice';
+import { useDispatch,useSelector } from 'react-redux';
 export default function SignIn() {
-  const [formData,setFormData] = useState({});
-  const [errorMessage,setErrorMessage] = useState(null);
-  const [loading,setLoading] = useState(false)
+  const {loading, error:errorMessage} = useSelector((state)=>state.user)  
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [formData,setFormData] = useState({});
   const handleChange =(e)=>{
     setFormData({...formData,[e.target.id]:e.target.value.trim()})
   };
@@ -14,11 +16,11 @@ export default function SignIn() {
     e.preventDefault();
     if(!formData.email || !formData.password){
       // return toast.error("Fill the details")
-      return setErrorMessage("Fill the details")
+      return dispatch(signInFailure('Please fill all the fields'))
     }
     try {
       // setLoading(true);
-      setErrorMessage(null)
+      dispatch(signInStart());
       const res = await fetch('/api/auth/signin',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
@@ -27,15 +29,18 @@ export default function SignIn() {
       const data = await res.json();
       if(data.success===false){
         // return setErrorMessage(data.message)
-        return toast.error(data.message)
+        // return toast.error(data.message)
+        dispatch(signInFailure(data.message));
       }
       // setLoading(false);
       if(res.ok) {
+        dispatch(singInSuccess(data))
         navigate('/');
         toast.success("Sign In Successfully")
       }
     } catch (error) {
-      setErrorMessage(error.message)
+      dispatch(signInFailure(error.message))
+      // setErrorMessage(error.message)
       // setLoading(false)
     }
   }
@@ -59,22 +64,21 @@ export default function SignIn() {
               <Label value='Your Password'/>
               <TextInput onChange={handleChange} type='password' placeholder='Password' id='password' />
             </div>
-            <Button gradientDuoTone='purpleToPink' type='submit'>
-              {/* {
+            <Button gradientDuoTone='purpleToPink' type='submit' disabled={loading}>
+              {
                 loading ? (
                   <>
                   <Spinner size='sm'  />
                   <span className='pl-3' >Loading...</span>
                   </>
                   
-                ) : 'Sign Up'
-              } */}
-              Sign Up
+                ) : 'Sign In'
+              }
             </Button>
           </form>
           <div className="flex gap-2 text-sm mt-5">
             <span>Don't Have an Account?</span>
-            <Link to='/sign-up'>Sign In</Link>
+            <Link to='/sign-up'>Sign Up</Link>
           </div>
           {
             errorMessage && 
