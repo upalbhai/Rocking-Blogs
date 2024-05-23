@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { Link,useNavigate } from 'react-router-dom'
 import {Alert, Button, Label, Spinner, TextInput } from 'flowbite-react'
 import toast from 'react-hot-toast';
-import { signInStart,signInFailure,singInSuccess } from '../redux/user/userSlice';
+import { signInStart,signInFailure,signInSuccess } from '../redux/user/userSlice';
 import { useDispatch,useSelector } from 'react-redux';
+import Oath from '../components/Oath';
 export default function SignIn() {
   const {loading, error:errorMessage} = useSelector((state)=>state.user)  
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ export default function SignIn() {
       }
       // setLoading(false);
       if(res.ok) {
-        dispatch(singInSuccess(data))
+        dispatch(signInSuccess(data))
         navigate('/');
         toast.success("Sign In Successfully")
       }
@@ -75,6 +76,7 @@ export default function SignIn() {
                 ) : 'Sign In'
               }
             </Button>
+            <Oath />
           </form>
           <div className="flex gap-2 text-sm mt-5">
             <span>Don't Have an Account?</span>
