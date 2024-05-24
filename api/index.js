@@ -20,9 +20,7 @@ mongoose.connect(process.env.MONGOURL).then(()=>{
 app.listen(3000,(req,res)=>{
     console.log('Server running on 3000')
 })
-app.get('/',(req,res)=>{
-    res.send('Hello World')
-})
+
 
 // routes
 app.use('/api/user',userRoutes)
