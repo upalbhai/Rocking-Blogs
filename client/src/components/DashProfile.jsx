@@ -1,4 +1,4 @@
-import { Button, TextInput } from 'flowbite-react'
+import { Button, Modal, TextInput } from 'flowbite-react'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { CircularProgressbar } from 'react-circular-progressbar';
@@ -6,12 +6,16 @@ import 'react-circular-progressbar/dist/styles.css';
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from 'firebase/storage'
 import { app } from '../firebase';
 import toast from 'react-hot-toast';
-import { updateStart,updateFailure,updateSuccess } from '../redux/user/userSlice';
+import { updateStart,updateFailure,updateSuccess,deleteUserFailure,deleteUserStart,deleteUserSuccess,signoutSuccess } from '../redux/user/userSlice';
+import { HiOutlineExclamationCircle } from 'react-icons/hi';
+
 export default function DashProfile() {
-    const {currentUser}= useSelector((state)=>state.user);
+    const {currentUser,error}= useSelector((state)=>state.user);
     const [imageFile,setImageFile] = useState(null);
+
     const [imageUrl,setImageUrl] = useState(null);
-    const [loading,setLoading] = useState(false)
+    const [loading,setLoading] = useState(false);
+    const [showModal,setShowModal] = useState(false)
     const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
     const [formData,setFormData] = useState({})
     const [imageFileUploadError,setImageFileUploadError] = useState(null)
@@ -121,12 +125,50 @@ const uploadImage = async () => {
             }
             else{
                 dispatch(updateSuccess(data));
-                toast.success('Profile update successfully')
+                toast.success('Profile update successfully');
             }
         } catch (error) {
             
         }
     }
+    const handleDelete = async () => {
+        setShowModal(false);
+        try {
+          dispatch(deleteUserStart());
+          const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+            method: 'DELETE',
+          });
+          const data = await res.json();
+          if (!res.ok) {
+            dispatch(deleteUserFailure(data.message));
+            return toast(data.message)
+          } else {
+            dispatch(deleteUserSuccess(data));
+            toast.success('User deleted successfully');
+          }
+        } catch (error) {
+          dispatch(deleteUserFailure(error.message));
+          toast.error(error.message)
+        }
+      };
+    const handleSignout = async () => {
+        try {
+          const res = await fetch('/api/user/signout', {
+            method: 'POST',
+          });
+          const data = await res.json();
+          if (!res.ok) {
+            console.log(data.message);
+            return toast.error(data.message);
+          } else {
+            dispatch(signoutSuccess());
+            toast.success('Signout successfully');
+          }
+        } catch (error) {
+          console.log(error.message);
+          toast.error(error.message)
+        }
+      };
     // console.log(formData)
   return (
     <div className='max-w-lg mx-auto p-3 w-full'>
@@ -166,9 +208,22 @@ const uploadImage = async () => {
         <Button type='submit' gradientDuoTone='purpleToBlue' outline disabled={loading} >Update</Button>
       </form>
       <div className="text-red-500 flex justify-between mt-5">
-        <span className='cursor-pointer' >Delete</span>
-        <span className='cursor-pointer' >SignOut</span>
+        <span onClick={()=>setShowModal(true)} className='cursor-pointer' >Delete</span>
+        <span className='cursor-pointer' onClick={handleSignout} >SignOut</span>
       </div>
+      <Modal show={showModal} onClose={()=>setShowModal(false)} popup size='md' >
+        <Modal.Header />
+        <Modal.Body>
+            <div className="text-center">
+                <HiOutlineExclamationCircle className='h-14 w-14 text-gray-700 dark:text-gray-200 mb-4 mx-auto' />
+                <h3 className='mb-5 text-lg text-gray-500 dark:text-gray-200' >Are You Sure Want To Delete This Account?</h3>
+                <div className='flex justify-center gap-4' >
+                    <Button color='failure' onClick={handleDelete} >Yes I'm sure</Button>
+                    <Button color='success' onClick={()=>setShowModal(false)} >No, Cancel</Button>
+                </div>
+            </div>
+        </Modal.Body>
+      </Modal>
     </div>
   )
 }
