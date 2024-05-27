@@ -50,7 +50,7 @@ export default function CreatePost() {
     }
     const handleSubmint =async(e)=>{
         e.preventDefault();
-        if(!formData.category){
+        if(formData.category==='uncategorized'){
             return toast.error('Please select a category')
         }
         try {
@@ -67,7 +67,7 @@ export default function CreatePost() {
             }
             if(res.ok){
                 toast.success('Post Created Successfully');
-                navigate(`/post/${data.title.split(' ').join('-').toLowerCase().replace(/[^a-zA-Z0-9-]/g, '')}`);
+                navigate(`/post/${data.slug}`);
             }
         } catch (error) {
             toast.error('something went wrong')

@@ -18,6 +18,11 @@ const postSchema = new mongoose.Schema({
         type:String,
         default:'https://images.app.goo.gl/qXNeL39HFsaHAvgMA'
     },
+    slug: {
+        type: String,
+        required: true,
+        unique: true,
+      },
     category:{
         type:String,
         default:'uncategorized'
