@@ -57,6 +57,9 @@ export default function DashPost() {
             const res = await fetch(`/api/post/deletepost/${postIdToDelete}/${currentUser._id}`,{
                 method:'DELETE',
             })
+            if(res.ok){
+                setUserPosts(data.posts)
+            }
            const data = await res.json();
            if(!res.ok){
             return toast(data.message);
@@ -121,7 +124,7 @@ export default function DashPost() {
            }
          </>
         ):(
-            <p>no posts</p>
+            <p>Loading...</p>
         )}
         <Modal show={showModal} onClose={()=>setShowModal(false)} popup size='md' >
         <Modal.Header />
