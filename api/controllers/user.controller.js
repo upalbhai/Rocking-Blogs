@@ -1,3 +1,4 @@
+import Post from "../model/post.model.js"
 import User from "../model/user.model.js"
 import { errorHandler } from "../utils/errorHandler.js"
 import bcrypt from 'bcryptjs'
@@ -67,11 +68,15 @@ export const updateuser = async (req, res, next) => {
     }
     try {
       await User.findByIdAndDelete(req.params.userId);
-      res.status(200).json('User has been deleted');
+            // Delete posts created by the user
+      await Post.deleteMany({ userId: req.params.userId });
+      res.status(200).json('User and their posts have been deleted');
     } catch (error) {
       next(error);
     }
   };
+  
+  
 
   export const signout = (req, res, next) => {
     try {
@@ -126,3 +131,30 @@ export const updateuser = async (req, res, next) => {
     }
   };
   
+  export const deleteUserByAdmin = async (req, res, next) => {
+    if (!req.user.isAdmin && req.user.id !== req.params.userId) {
+      return next(errorHandler(403, 'You are not allowed to delete this user'));
+    }
+  
+    try {
+      const deletingUser = await User.findById(req.params.userId);
+      if (!deletingUser) {
+        return next(errorHandler(404, 'User not found'));
+      }
+  
+      // Prevent an admin from deleting another admin
+      if (deletingUser.isAdmin) {
+        return next(errorHandler(403, 'You are not allowed to delete an admin'));
+      }
+  
+      // Proceed with deletion if checks pass
+      await User.findByIdAndDelete(req.params.userId);
+  
+      // Delete posts created by the user
+      await Post.deleteMany({ createdBy: req.params.userId });
+  
+      res.status(200).json('User and their posts have been deleted');
+    } catch (error) {
+      next(error);
+    }
+  };

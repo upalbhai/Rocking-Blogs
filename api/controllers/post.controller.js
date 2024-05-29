@@ -4,7 +4,7 @@ export const createPost = async (req, res, next) => {
   if (!req.user.isAdmin) {
     return next(errorHandler(403, 'You are not allowed to create a post'));
   }
-  if (!req.body.title || !req.body.content || !req.body.image) {
+  if (!req.body.title || !req.body.content || !req.body.image || !req.body.category) {
     return next(errorHandler(400, 'Please provide all required fields'));
   }
   const slug = req.body.title
@@ -67,17 +67,18 @@ export const getPosts = async(req,res,next)=>{
   }
 }
 
-export const deletePost =async (req,res,next)=>{
-  if(!req.user.isAdmin ||  req.user._id !== req.user.userId){
-    return next(errorHandler(403,'You are not allow to delete this post'))
-  }try {
-    await Post.findByIdAndDelete(req.params.postId);
-    res.json('The Post Has been deleted successfully')
-  } catch (error) {
-    next(error)
+export const deletePost = async (req, res, next) => {
+  if (!req.user.isAdmin || req.user.id !== req.params.userId) {
+    return next(errorHandler(403, 'You are not allowed to delete this post'));
   }
+  try {
+    await Post.findByIdAndDelete(req.params.postId);
+    res.status(200).json('The post has been deleted');
+  } catch (error) {
+    next(error);
+  }
+};
 
-}
 
 export const updatePost = async(req,res,next)=>{
   if(!req.user.isAdmin ||  req.user._id !== req.user.userId){

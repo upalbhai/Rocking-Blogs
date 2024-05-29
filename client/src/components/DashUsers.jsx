@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { FaCheck, FaTimes } from 'react-icons/fa';
+import toast from 'react-hot-toast';
 
 export default function DashUsers() {
   const { currentUser } = useSelector((state) => state.user);
@@ -54,20 +55,24 @@ export default function DashUsers() {
 
   const handleDeleteUser = async () => {
     try {
-      const res = await fetch(`/api/user/delete/${userIdToDelete}`, {
+      const res = await fetch(`/api/user/delete/admin/${userIdToDelete}`, {
         method: 'DELETE',
       });
-      if (!res.ok) {
-        throw new Error(`Error: ${res.status} ${res.statusText}`);
+      const data = await res.json()
+      if(res.ok){
+        setUsers((prev)=>prev.filter((user)=>user._id!==userIdToDelete))
+        setShowModal(false)
+        toast.success('User deleted successfully')
       }
-      const data = await res.json();
-      setUsers((prev) => prev.filter((user) => user._id !== userIdToDelete));
-      setShowModal(false);
+      else{
+        toast.error(data.message)
+      }
     } catch (error) {
-      setError(error.message);
-      console.error('Failed to delete user:', error);
+      toast.error(error.message);
+    //   console.error('Failed to delete user:', error);
     }
   };
+
 
   return (
     <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500'>
@@ -106,15 +111,17 @@ export default function DashUsers() {
                     )}
                   </Table.Cell>
                   <Table.Cell>
-                    <span
-                      onClick={() => {
-                        setShowModal(true);
-                        setUserIdToDelete(user._id);
-                      }}
-                      className='font-medium text-red-500 hover:underline cursor-pointer'
-                    >
-                      Delete
-                    </span>
+                  <button
+                    disabled={user.isAdmin}
+                    className={`p-2 rounded-lg text-white ${user.isAdmin ? 'bg-red-500 opacity-50 cursor-not-allowed' : 'bg-red-500 hover:bg-red-600'}`}
+                    onClick={() => {
+                    setShowModal(true);
+                    setUserIdToDelete(user._id);
+                    }}
+>
+  Delete
+</button>
+
                   </Table.Cell>
                 </Table.Row>
               </Table.Body>

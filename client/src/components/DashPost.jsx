@@ -124,7 +124,10 @@ export default function DashPost() {
            }
          </>
         ):(
-            <p>Loading...</p>
+          <div className='flex flex-col text-center gap-4' >
+            <p>You have not created any post yet</p>
+            <Link to='/create-post' className='bg-blue-900 text-gray-200 p-3 rounded-xl' >Click here to create a post</Link>
+          </div>
         )}
         <Modal show={showModal} onClose={()=>setShowModal(false)} popup size='md' >
         <Modal.Header />
