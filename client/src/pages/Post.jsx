@@ -2,6 +2,7 @@ import { Button, Spinner } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import { Link, useParams } from 'react-router-dom'
+import CallToAction from '../components/CallToAction';
 export default function Post() {
     const {postSlug} = useParams();
     const [loading,setLoading] = useState(true);
@@ -64,7 +65,7 @@ export default function Post() {
         dangerouslySetInnerHTML={{ __html: post && post.content }}
       ></div>
       <div className='max-w-4xl mx-auto w-full'>
-        {/* <CallToAction /> */}
+        <CallToAction />
       </div>
       {/* <CommentSection postId={post._id} /> */}
 
