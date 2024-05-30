@@ -3,6 +3,7 @@ import { Select, TextInput,FileInput, Button } from 'flowbite-react'
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import ReactQuill from 'react-quill';
+
 import 'react-quill/dist/quill.snow.css';
 import { app } from '../firebase';
 import { CircularProgressbar } from 'react-circular-progressbar';
@@ -10,6 +11,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import { useNavigate } from 'react-router-dom';
 export default function CreatePost() {
     const [file,setFile] = useState(null);
+    const [category1,setCategory1] = useState(false)
     const [formData,setFormData] = useState({});
     const navigate= useNavigate();
     const [imageUploadProgress,setImageuploadProgress] = useState(null)
@@ -50,8 +52,8 @@ export default function CreatePost() {
     }
     const handleSubmint =async(e)=>{
         e.preventDefault();
-        if(formData.category==='uncategorized'){
-            return toast.error('Please select a category')
+        if(!category1){
+            toast.error('category not selected')
         }
         try {
             const res = await fetch(`/api/post/createpost`,{
@@ -79,8 +81,11 @@ export default function CreatePost() {
       <form onSubmit={handleSubmint} className='flex flex-col gap-4'>
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
         <TextInput type='text' placeholder='Title' required id='title' className='flex-1' onChange={(e) =>setFormData({ ...formData, title: e.target.value })}  />
-        <Select onChange={(e) =>setFormData({ ...formData, category: e.target.value })
-            }>
+        <Select onChange={(e) => {
+    setFormData({ ...formData, category: e.target.value });
+    setCategory1(true);
+}}
+>
             <option value='uncategorized' >Select a Category</option>
             <option value='cricket' >Cricket</option>
             <option value='football' >Football</option>

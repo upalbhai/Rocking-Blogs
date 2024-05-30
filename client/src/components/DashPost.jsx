@@ -8,7 +8,7 @@ import { HiOutlineExclamationCircle } from 'react-icons/hi';
 export default function DashPost() {
     const { currentUser } = useSelector((state) => state.user);
     const [userPosts, setUserPosts] = useState([]);
-    const [showMore,setShowMore] = useState(true)
+    const [showMore,setShowMore] = useState(false)
     const [showModal,setShowModal] = useState(false)
     const [postIdToDelete,setPostIdToDelete] = useState('');
     useEffect(() => {
@@ -16,6 +16,7 @@ export default function DashPost() {
         try {
           const res = await fetch(`/api/post/getposts?userId=${currentUser._id}`);
           const data = await res.json();
+          setShowMore(true)
             console.log(userPosts)
           if (!res.ok) {
             return toast.error(data.message || 'Failed to fetch posts');
@@ -51,27 +52,26 @@ export default function DashPost() {
           toast.error(error.message);
         }
       };
-      const handleDelete = async()=>{
+      const handleDelete = async () => {
         try {
-            setShowModal(false)
-            const res = await fetch(`/api/post/deletepost/${postIdToDelete}/${currentUser._id}`,{
-                method:'DELETE',
-            })
-            if(res.ok){
-                setUserPosts(data.posts)
+            setShowModal(false);
+            const res = await fetch(`/api/post/deletepost/${postIdToDelete}/${currentUser._id}`, {
+                method: 'DELETE',
+            });
+    
+            const data = await res.json(); // Ensure this is called immediately after the fetch
+    
+            if (!res.ok) {
+                return toast(data.message);
             }
-           const data = await res.json();
-           if(!res.ok){
-            return toast(data.message);
-           }
-           else{
-            setUserPosts((prev)=>prev.filter((post)=>post._id != postIdToDelete))
-            toast.success("Post has been deleted successfully")
-           }
+    
+            setUserPosts((prev) => prev.filter((post) => post._id !== postIdToDelete)); // Fixed comparison operator
+            toast.success("Post has been deleted successfully");
         } catch (error) {
-            toast.error(error.message)
+            toast.error(error.message);
         }
-      }
+    };
+    
     
   return (
     <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scroll-bar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scroll-bar-thumb-slate-500' >
@@ -116,7 +116,7 @@ export default function DashPost() {
              </Table.Body>
            </Table>
            {
-            showMore && (
+            showMore &&  (
                 <button onClick={handleShowMore} className='w-full text-teal-500 self-center text-sm py-7'>
                     Show More
                 </button>
