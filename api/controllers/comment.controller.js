@@ -6,6 +6,7 @@ export const createComment = async (req, res, next) => {
     
     try {
       const { content, postId, userId } = req.body;
+      
         
       if (userId !== req.user.id) {
         return next(
@@ -59,3 +60,31 @@ export const createComment = async (req, res, next) => {
         next(error)
     }
   }
+
+  export const editComment = async (req, res, next) => {
+    try {
+      const comment = await Comment.findById(req.params.commentId);
+      
+      if (!comment) {
+        return next(errorHandler(404, 'Comment Not Found'));
+      }
+  
+      if (comment.userId.toString() !== req.user.id && !req.user.isAdmin) {
+        return next(errorHandler(403, 'You are not allowed to edit this comment'));
+      }
+  
+      if (!req.body.content || req.body.content.trim() === "") {
+        return next(errorHandler(400, 'Content is required'));
+      }
+  
+      const editedComment = await Comment.findByIdAndUpdate(
+        req.params.commentId,
+        { content: req.body.content },
+        { new: true }
+      );
+  
+      res.status(200).json(editedComment);
+    } catch (error) {
+      next(error);
+    }
+  };
