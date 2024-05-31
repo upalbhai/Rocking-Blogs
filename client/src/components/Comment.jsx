@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import moment from 'moment';
-export default function Comment({comment}) {
+import { FaThumbsUp } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
+export default function Comment({comment,onLike}) {
+    const {currentUser} = useSelector((state)=>state.user)
     const [user,setUser]=useState({})
     useEffect(()=>{
         const getUser = async()=>{
@@ -40,6 +43,25 @@ export default function Comment({comment}) {
           </span>
         </div>
         <p className='text-gray-500 pb-2'>{comment.content}</p>
+        <div className="">
+        <button
+                type='button'
+                onClick={() => onLike(comment._id)}
+                className={`text-gray-400 hover:text-blue-500 ${
+                  currentUser &&
+                  comment.likes.includes(currentUser._id) &&
+                  '!text-blue-500'
+                }`}
+              >
+                <FaThumbsUp className='text-sm' />
+              </button>
+              <p className='text-gray-400'>
+                {comment.numberOfLikes > 0 &&
+                  comment.numberOfLikes +
+                    ' ' +
+                    (comment.numberOfLikes === 1 ? 'like' : 'likes')}
+              </p>
+        </div>
       </div>
     </div>
   )
