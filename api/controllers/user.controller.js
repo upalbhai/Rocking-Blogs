@@ -1,3 +1,4 @@
+import Comment from "../model/comment.model.js"
 import Post from "../model/post.model.js"
 import User from "../model/user.model.js"
 import { errorHandler } from "../utils/errorHandler.js"
@@ -66,11 +67,26 @@ export const updateuser = async (req, res, next) => {
     if (req.user.id !== req.params.userId) {
       return next(errorHandler(403, 'You are not allowed to delete this user'));
     }
+  
     try {
-      await User.findByIdAndDelete(req.params.userId);
-            // Delete posts created by the user
-      await Post.deleteMany({ userId: req.params.userId });
-      res.status(200).json('User and their posts have been deleted');
+      const userId = req.params.userId;
+  
+      // Check if the user exists
+      const user = await User.findById(userId);
+      if (!user) {
+        return next(errorHandler(404, 'User not found'));
+      }
+  
+      // Delete the user
+      await User.findByIdAndDelete(userId);
+  
+      // Delete posts created by the user
+      await Post.deleteMany({ userId });
+  
+      // Delete comments created by the user
+      await Comment.deleteMany({ userId });
+  
+      res.status(200).json('User, their posts, and comments have been deleted');
     } catch (error) {
       next(error);
     }
@@ -149,12 +165,27 @@ export const updateuser = async (req, res, next) => {
   
       // Proceed with deletion if checks pass
       await User.findByIdAndDelete(req.params.userId);
+      await Comment.deleteMany({userId:req.params.userId});
   
       // Delete posts created by the user
       await Post.deleteMany({ createdBy: req.params.userId });
-  
+      await Comment.deleteMany({userId:req.params.userId});
       res.status(200).json('User and their posts have been deleted');
     } catch (error) {
       next(error);
     }
   };
+
+  export const getUser = async(req,res,next)=>{
+    try {
+      const user = await User.findById(req.params.userId);
+      if(!user){
+        return(next(errorHandler(404,'User not found')))
+      }
+      const{password,...rest} = user._doc;
+      res.status(201).json(rest) 
+    } catch (error) {
+      next(error)
+    }
+
+  }
