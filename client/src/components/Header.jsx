@@ -31,7 +31,7 @@ export default function Header() {
         }
       };
   return (
-    <Navbar className='border-b-2' >
+    <Navbar className='border-b-2 ' >
         <Link to='/'className='self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white' >
             <span className='px-2 py-1 bg-gradient-to-b from-sky-400 to-sky-200 rounded-lg text-slate-900' >Rocking</span>Blog
         </Link>
