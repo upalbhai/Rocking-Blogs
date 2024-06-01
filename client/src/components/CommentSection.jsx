@@ -12,6 +12,8 @@ export default function CommentSection({ postId }) {
   const [comment, setComment] = useState('');
   const [commentError, setCommentError] = useState(null);
   const [comments, setComments] = useState([]);
+  const [showModal,setShowModal]=useState(false)
+  const [commentToDelete,setCommentToDelete]= useState(null);
   console.log(comments)
   useEffect(()=>{
     const getComments = async()=>{
@@ -97,6 +99,32 @@ export default function CommentSection({ postId }) {
       )
     );
   };
+  const handleDelete = async (commentId) => {
+    setShowModal(false);
+    try {
+      if (!currentUser) {
+        navigate('/sign-in');
+        return;
+      }
+  
+      const res = await fetch(`/api/comment/deletecomment/${commentId}`, {
+        method: 'DELETE',
+      });
+  
+      const data = await res.json();
+  
+      if (!res.ok) {
+        toast.error(data.message);
+        return;
+      }
+  
+      setComments(comments.filter((comment) => comment._id !== commentId));
+      toast.success('Comment deleted successfully');
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+  
   return (
     <div className='max-w-2xl mx-auto w-full p-3'>
       {currentUser ? (
@@ -161,9 +189,29 @@ export default function CommentSection({ postId }) {
             </div>
         </div>
         {comments.map((comment)=>(
-            <Comment key={comment._id} comment={comment} onLike={handleLike} onEdit={handleEdit} />
+            <Comment key={comment._id} 
+            comment={comment} 
+            onLike={handleLike} 
+            onEdit={handleEdit} 
+            onDelete={(commentId)=>{
+              setShowModal(true)
+              setCommentToDelete(commentId)
+            }} />
         ))}
         </>)}
+        <Modal show={showModal} onClose={()=>setShowModal(false)} popup size='md' >
+        <Modal.Header />
+        <Modal.Body>
+            <div className="text-center">
+                <HiOutlineExclamationCircle className='h-14 w-14 text-gray-700 dark:text-gray-200 mb-4 mx-auto' />
+                <h3 className='mb-5 text-lg text-gray-500 dark:text-gray-200' >Are You Sure Want To Delete This Comment?</h3>
+                <div className='flex justify-center gap-4' >
+                    <Button color='failure' onClick={()=>handleDelete(commentToDelete)} >Yes I'm sure</Button>
+                    <Button color='success' onClick={()=>setShowModal(false)} >No, Cancel</Button>
+                </div>
+            </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }
