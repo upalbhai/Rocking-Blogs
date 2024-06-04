@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { BsFacebook, BsInstagram, BsTwitter, BsGithub, BsDribbble } from 'react-icons/bs';
 export default function FooterCom() {
   return (
-    <Footer container className='border border-t-8 border-teal-500'>
+    <Footer container className='border border-t-8  border-teal-500 bg-custom-nav dark:border-custom-orange  dark:bg-custom-black'>
       <div className='w-full max-w-7xl mx-auto'>
         <div className='grid w-full justify-between sm:flex md:grid-cols-1'>
           <div className='mt-5'>
@@ -11,7 +11,7 @@ export default function FooterCom() {
               to='/'
               className='self-center whitespace-nowrap text-lg sm:text-xl font-semibold dark:text-white'
             >
-              <span className='px-2 py-1 bg-gradient-to-r from-sky-400 to-sky-200 rounded-lg text-slate-900 '>
+              <span className='px-2 py-1 bg-gradient-to-r from-sky-400 to-sky-200  rounded-lg text-slate-900 '>
                 Rocking
               </span>
               Blog

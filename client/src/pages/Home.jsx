@@ -16,17 +16,17 @@ export default function Home() {
   }, []);
   return (
     <div>
-      <div className='flex flex-col gap-6 p-28 px-6 max-w-6xl mx-auto '>
-      <h1 className='text-slate-900 dark:text-slate-200 text-3xl font-bold lg:text-6xl' >Welcome to my Blog Website</h1>
+      <div className='flex flex-col gap-6 p-28 px-6 max-w-6xl mx-auto'>
+      <h1 className='text-custom-orange dark:text-slate-200 text-3xl font-bold lg:text-6xl' >Welcome to my Blog Website</h1>
       <p className='text-gray-500 text-xs sm:text-sm' >Here You will blogs related to the <span className='block'>sports like cricket, football, Kabaddi, etc</span></p>
         <Link
           to='/search'
-          className='text-xs sm:text-sm text-teal-500 font-bold hover:underline'
+          className='text-xs sm:text-sm text-teal-500 font-bold hover:underline dark:text-custom-orange'
         >
           View all posts
         </Link>
       </div>
-      <div className='p-3 bg-amber-100 dark:bg-slate-700'>
+      <div className='p-3'>
         <CallToAction />
       </div>
 
@@ -41,7 +41,7 @@ export default function Home() {
             </div>
             <Link
               to={'/search'}
-              className='text-lg text-teal-500 hover:underline text-center'
+              className='text-lg text-teal-500 dark:text-custom-orange hover:underline text-center'
             >
               View all posts
             </Link>
