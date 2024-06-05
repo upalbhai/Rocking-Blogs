@@ -21,14 +21,14 @@ export default function FooterCom() {
             <div>
               <Footer.Title className='text-black ' title='About' />
               <Footer.LinkGroup col>
-                <Footer.Link className='text-black '
+                <Footer.Link className='text-black  dark:text-gray-400'
                   href='https://www.espn.in'
                   target='_blank'
                   rel='noopener noreferrer'
                 >
                   ESPN
                 </Footer.Link>
-                <Footer.Link className='text-black '
+                <Footer.Link className='text-black  dark:text-gray-400'
                   href='/about'
                   target='_blank'
                   rel='noopener noreferrer'
@@ -40,26 +40,26 @@ export default function FooterCom() {
             <div>
               <Footer.Title title='Follow us' className='text-black text-bold ' />
               <Footer.LinkGroup col>
-                <Footer.Link className='text-black '
+                <Footer.Link className='text-black  dark:text-gray-400'
                   href='https://github.com/upalbhai'
                   target='_blank'
                   rel='noopener noreferrer'
                 >
                   Github
                 </Footer.Link>
-                <Footer.Link href='#'className='text-black '>Discord</Footer.Link>
+                <Footer.Link href='#'className='text-black  dark:text-gray-400'>Discord</Footer.Link>
               </Footer.LinkGroup>
             </div>
             <div>
               <Footer.Title title='Legal'className='text-black ' />
               <Footer.LinkGroup col>
-                <Footer.Link href='#' className='text-black '>Privacy Policy</Footer.Link>
-                <Footer.Link href='#' className='text-black '>Terms &amp; Conditions</Footer.Link>
+                <Footer.Link href='#' className='text-black  dark:text-gray-400'>Privacy Policy</Footer.Link>
+                <Footer.Link href='#' className='text-black  dark:text-gray-400'>Terms &amp; Conditions</Footer.Link>
               </Footer.LinkGroup>
             </div>
           </div>
         </div>
-        <Footer.Divider className="border-black" />
+        <Footer.Divider className="border-black  dark:border-gray-900" />
         <div className='w-full sm:flex sm:items-center sm:justify-between'>
           <Footer.Copyright className='text-black '
             href='#'
@@ -67,11 +67,11 @@ export default function FooterCom() {
             year={new Date().getFullYear()}
           />
           <div className="flex gap-6 sm:mt-0 mt-4 sm:justify-center" >
-            <Footer.Icon className='text-black ' href='#' icon={BsFacebook}/>
-            <Footer.Icon className='text-black ' href='#' icon={BsInstagram}/>
-            <Footer.Icon className='text-black ' href='#' icon={BsTwitter}/>
-            <Footer.Icon className='text-black ' href='https://github.com/upalbhai' icon={BsGithub}/>
-            <Footer.Icon className='text-black ' href='#' icon={BsDribbble}/>
+            <Footer.Icon className='text-black  dark:text-gray-400' href='#' icon={BsFacebook}/>
+            <Footer.Icon className='text-black  dark:text-gray-400' href='#' icon={BsInstagram}/>
+            <Footer.Icon className='text-black  dark:text-gray-400' href='#' icon={BsTwitter}/>
+            <Footer.Icon className='text-black  dark:text-gray-400' href='https://github.com/upalbhai' icon={BsGithub}/>
+            <Footer.Icon className='text-black dark:text-gray-400 ' href='#' icon={BsDribbble}/>
 
           </div>
         </div>

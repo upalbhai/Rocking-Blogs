@@ -16,7 +16,6 @@ export default function Search() {
   const [showMore, setShowMore] = useState(false);
 
   const location = useLocation();
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,34 +23,35 @@ export default function Search() {
     const searchTermFromUrl = urlParams.get('searchTerm');
     const sortFromUrl = urlParams.get('sort');
     const categoryFromUrl = urlParams.get('category');
+
     if (searchTermFromUrl || sortFromUrl || categoryFromUrl) {
       setSidebarData({
         ...sidebarData,
-        searchTerm: searchTermFromUrl,
-        sort: sortFromUrl,
-        category: categoryFromUrl,
+        searchTerm: searchTermFromUrl || '',
+        sort: sortFromUrl || 'desc',
+        category: categoryFromUrl || 'all',
       });
     }
 
     const fetchPosts = async () => {
-        setLoading(true);
-        const searchQuery = urlParams.toString();
-        try {
-          const res = await fetch(`/api/post/getposts?${categoryFromUrl === 'all' ? '' : searchQuery}`);
-          if (res.ok) {
-            const data = await res.json();
-            setPosts(data.posts);
-            setLoading(false);
-            setShowMore(data.posts.length === 9);
-          } else {
-            setLoading(false);
-            // Handle error response
-          }
-        } catch (error) {
+      setLoading(true);
+      const searchQuery = urlParams.toString();
+      try {
+        const res = await fetch(`/api/post/getposts?${categoryFromUrl === 'all' ? '' : searchQuery}`);
+        if (res.ok) {
+          const data = await res.json();
+          setPosts(data.posts);
           setLoading(false);
-          // Handle network error
+          setShowMore(data.posts.length === 9);
+        } else {
+          setLoading(false);
+          // Handle error response
         }
-      };
+      } catch (error) {
+        setLoading(false);
+        // Handle network error
+      }
+    };
     fetchPosts();
   }, [location.search]);
 
@@ -104,7 +104,7 @@ export default function Search() {
     <div className='flex flex-col md:flex-row'>
       <div className='p-7 border-b md:border-r md:min-h-screen border-gray-500'>
         <form className='flex flex-col gap-8' onSubmit={handleSubmit}>
-          <div className='flex   items-center gap-2'>
+          <div className='flex items-center gap-2'>
             <label className='whitespace-nowrap font-semibold'>
               Search Term:
             </label>
