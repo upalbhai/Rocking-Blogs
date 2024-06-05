@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Link,useNavigate } from 'react-router-dom'
 import {Alert, Button, Label, Spinner, TextInput } from 'flowbite-react'
 import toast from 'react-hot-toast';
+import logo from '../assets/logo.png'
+import logo_white from '../assets/logo-white.png'
 import { signInStart,signInFailure,signInSuccess } from '../redux/user/userSlice';
 import { useDispatch,useSelector } from 'react-redux';
 import Oath from '../components/Oath';
@@ -51,8 +53,8 @@ export default function SignIn() {
       <div className="flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5">
         <div className="flex-1">
         <Link to='/'className='self-center font-bold dark:text-white text-4xl' >
-            <span className='px-2 py-1 bg-gradient-to-b from-sky-400 to-sky-200 rounded-lg text-slate-900' >Rocking</span>Blog
-        </Link>
+        <img src={logo} className='w-auto h-3 sm:h-5 dark:hidden' /> 
+<img src={logo_white} className='w-auto h-3 sm:h-5 hidden dark:inline' />         </Link>
         <p className='text-sm mt-5' >This is simple demo project which showcase my skill, you can able to creater a account</p>
         </div>
         <div className="flex-1">
@@ -65,7 +67,7 @@ export default function SignIn() {
               <Label value='Your Password'/>
               <TextInput onChange={handleChange} type='password' placeholder='Password' id='password' />
             </div>
-            <Button gradientDuoTone='purpleToPink' type='submit' disabled={loading}>
+            <Button className='bg-custom-btn' type='submit' disabled={loading}>
               {
                 loading ? (
                   <>
@@ -79,8 +81,8 @@ export default function SignIn() {
             <Oath />
           </form>
           <div className="flex gap-2 text-sm mt-5">
-            <span>Don't Have an Account?</span>
-            <Link to='/sign-up'>Sign Up</Link>
+            <span >Don't Have an Account?</span>
+            <Link className='font-bold text-custom-orange dark:text-teal-500' to='/sign-up'>Sign Up</Link>
           </div>
           {
             errorMessage && 

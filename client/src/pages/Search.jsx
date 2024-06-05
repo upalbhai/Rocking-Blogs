@@ -136,7 +136,7 @@ export default function Search() {
               <option value='kabaddi'>Kabaddi</option>
             </Select>
           </div>
-          <Button type='submit' outline gradientDuoTone='purpleToPink'>
+          <Button type='submit' className='bg-custom-dark dark:bg-custom-orange'>
             Apply Filters
           </Button>
         </form>

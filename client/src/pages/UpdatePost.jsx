@@ -107,7 +107,7 @@ export default function UpdatePost() {
         </div>
         <div className="flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3 ">
             <FileInput type='file' accept='image/*'  onChange={(e)=>setFile(e.target.files[0])} />
-            <Button type='button' gradientDuoTone='purpleToBlue' size='sm' outline onClick={handleUploadImage} disabled={imageUploadProgress}>{
+            <Button type='button' className='dark:bg-custom-orange' size='sm' outline onClick={handleUploadImage} disabled={imageUploadProgress}>{
                 imageUploadProgress ? <div className='w-16 h-16' >
                     <CircularProgressbar  value={imageUploadProgress} text={`${imageUploadProgress  || 0}%`} /> 
                 </div> : 'Upload Image'
@@ -118,7 +118,7 @@ export default function UpdatePost() {
         }
         <ReactQuill theme="snow" placeholder='Write something ...' className='h-72 mb-12' onChange={(value) => {setFormData({ ...formData, content: value });
           }} value={formData.content} />
-        <Button type='submit' gradientDuoTone='purpleToPink' >Edit</Button>
+        <Button type='submit' className='bg-custom-btn' >Edit</Button>
       </form>
     </div>
   )

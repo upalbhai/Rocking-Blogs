@@ -77,12 +77,12 @@ export default function DashComments() {
         <>
           <Table hoverable className='shadow-md'>
             <Table.Head>
-              <Table.HeadCell>Date updated</Table.HeadCell>
-              <Table.HeadCell>Comment content</Table.HeadCell>
-              <Table.HeadCell>Number of likes</Table.HeadCell>
-              <Table.HeadCell>PostId</Table.HeadCell>
-              <Table.HeadCell>UserId</Table.HeadCell>
-              <Table.HeadCell>Delete</Table.HeadCell>
+              <Table.HeadCell className='bg-gray-400'>Date updated</Table.HeadCell>
+              <Table.HeadCell className='bg-gray-400'>Comment content</Table.HeadCell>
+              <Table.HeadCell className='bg-gray-400'>Number of likes</Table.HeadCell>
+              <Table.HeadCell className='bg-gray-400'>PostId</Table.HeadCell>
+              <Table.HeadCell className='bg-gray-400'>UserId</Table.HeadCell>
+              <Table.HeadCell className='bg-gray-400'>Delete</Table.HeadCell>
             </Table.Head>
             {comments.map((comment) => (
               <Table.Body className='divide-y' key={comment._id}>

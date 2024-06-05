@@ -97,7 +97,7 @@ export default function Header() {
           </Dropdown>
         ) : (
           <Link to='/sign-in'>
-            <Button className='dark:bg-custom-orange' >
+            <Button className='bg-custom-btn' >
               Sign In
             </Button>
           </Link>

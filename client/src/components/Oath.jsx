@@ -38,8 +38,8 @@ export default function Oath() {
     }     
   return (
     <>
-    <Button outline onClick={handleGoogleClick} >
-      <AiFillGoogleCircle className="w-6 h-6 mr-2" /> Sign in with Google
+    <Button className='dark:bg-custom-orange' onClick={handleGoogleClick} >
+      <AiFillGoogleCircle className="w-6 h-6 mr-2 " /> Sign in with Google
     </Button>
     </>
   )

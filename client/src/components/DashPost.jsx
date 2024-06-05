@@ -74,17 +74,17 @@ export default function DashPost() {
     
     
   return (
-    <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scroll-bar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scroll-bar-thumb-slate-500' >
+    <div className='table-auto  overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scroll-bar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scroll-bar-thumb-slate-500' >
         {currentUser.isAdmin && userPosts.length>0 ? (
            <>
-           <Table hoverable className='shadow-md'>
+           <Table hoverable className='shadow-md  bg-slate-200'>
              <Table.Head>
-               <Table.HeadCell>Date Updated</Table.HeadCell>
-               <Table.HeadCell>Post Image</Table.HeadCell>
-               <Table.HeadCell>Post Title</Table.HeadCell>
-               <Table.HeadCell>Category</Table.HeadCell>
-               <Table.HeadCell>Delete</Table.HeadCell>
-               <Table.HeadCell><span>Edit</span></Table.HeadCell>
+               <Table.HeadCell className='bg-gray-400'>Date Updated</Table.HeadCell>
+               <Table.HeadCell className='bg-gray-400'>Post Image</Table.HeadCell>
+               <Table.HeadCell className='bg-gray-400'>Post Title</Table.HeadCell>
+               <Table.HeadCell className='bg-gray-400'>Category</Table.HeadCell>
+               <Table.HeadCell className='bg-gray-400'>Delete</Table.HeadCell>
+               <Table.HeadCell className='bg-gray-400'><span>Edit</span></Table.HeadCell>
              </Table.Head>
              <Table.Body className='divide-y'>
                {userPosts.map((post) => (

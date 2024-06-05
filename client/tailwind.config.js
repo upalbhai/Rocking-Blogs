@@ -16,6 +16,7 @@ export default {
         'custom-dark':'#2D3250',
         'custom-nav':'#B4B4B3',
         'custom-h1':'#004225',
+        'custom-btn':'#153448'
       },
     },
   },

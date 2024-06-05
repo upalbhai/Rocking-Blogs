@@ -79,18 +79,18 @@ export default function DashUsers() {
       {error && <p className="text-red-500">{error}</p>}
       {currentUser.isAdmin && users.length > 0 ? (
         <>
-          <Table hoverable className='shadow-md'>
-            <Table.Head>
-              <Table.HeadCell>Date created</Table.HeadCell>
-              <Table.HeadCell>User image</Table.HeadCell>
-              <Table.HeadCell>Username</Table.HeadCell>
-              <Table.HeadCell>Email</Table.HeadCell>
-              <Table.HeadCell>Admin</Table.HeadCell>
-              <Table.HeadCell>Delete</Table.HeadCell>
+          <Table hoverable className='shadow-md text-black rounded-xl  '>
+            <Table.Head  >
+              <Table.HeadCell className='bg-gray-400'>Date created</Table.HeadCell>
+              <Table.HeadCell className='bg-gray-400'>User image</Table.HeadCell>
+              <Table.HeadCell className='bg-gray-400'>Username</Table.HeadCell>
+              <Table.HeadCell className='bg-gray-400'>Email</Table.HeadCell>
+              <Table.HeadCell className='bg-gray-400'>Admin</Table.HeadCell>
+              <Table.HeadCell className='bg-gray-400'>Delete</Table.HeadCell>
             </Table.Head>
             {users.map((user) => (
               <Table.Body className='divide-y' key={user._id}>
-                <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
+                <Table.Row className=' dark:border-gray-700 dark:bg-gray-800'>
                   <Table.Cell>
                     {new Date(user.createdAt).toLocaleDateString()}
                   </Table.Cell>
